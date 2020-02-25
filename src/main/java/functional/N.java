@@ -9,11 +9,11 @@ package functional;
 * @author  Sam
 */
 
-public class NaturalNumber {
+public class N {
 
     /*-------------------------------------------------------------------------------------------------
-    * PUBLIC
-    -------------------------------------------------------------------------------------------------*/
+     * PUBLIC
+     -------------------------------------------------------------------------------------------------*/
 
     /**
     * Get the integer representation of natural number
@@ -34,18 +34,18 @@ public class NaturalNumber {
     * @author  Rob
     * @author  Sam
     */
-    public static class One extends NaturalNumber {
+    public static class O extends N {
         
         /*-------------------------------------------------------------------------------------------------
-        * PUBLIC
-        -------------------------------------------------------------------------------------------------*/
+         * PUBLIC
+         -------------------------------------------------------------------------------------------------*/
         
         /**
-        * Constructor for a NaturalNumber.One instance
+        * Constructor for a NaturalNumber.O instance
         *
-        * @return new NaturalNumber.One instance
+        * @return new NaturalNumber.O instance
         */
-        public One() {
+        public O() {
             // Nothing
         }
 
@@ -71,21 +71,21 @@ public class NaturalNumber {
     * @author  Rob
     * @author  Sam
     */
-    public static class Succ<SUCCEEDED_NATURAL_VALUE extends NaturalNumber> extends NaturalNumber {
+    public static class S<SUCCEEDED_NATURAL_VALUE extends N> extends N {
         
         private final SUCCEEDED_NATURAL_VALUE succeededNaturalValue;
         
         /*-------------------------------------------------------------------------------------------------
-        * PUBLIC
-        -------------------------------------------------------------------------------------------------*/
+         * PUBLIC
+         -------------------------------------------------------------------------------------------------*/
         
         /**
-        * Constructor for a NaturalNumber.Succ instance
+        * Constructor for a NaturalNumber.S instance
         *
         * @param succeededNaturalValue an instance for the natural number one less than the number we want to represent
-        * @return new NaturalNumber.Succ instance
+        * @return new NaturalNumber.S instance
         */
-        public Succ(SUCCEEDED_NATURAL_VALUE succeededNaturalValue) {
+        public S(SUCCEEDED_NATURAL_VALUE succeededNaturalValue) {
             this.succeededNaturalValue = succeededNaturalValue;
         }
 

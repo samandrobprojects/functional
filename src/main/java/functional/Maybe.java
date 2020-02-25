@@ -15,8 +15,8 @@ public class Maybe<OBJECT> extends Monad<OBJECT> {
     private final boolean _isNothing;
 
     /*-------------------------------------------------------------------------------------------------
-    * PUBLIC
-    -------------------------------------------------------------------------------------------------*/
+     * PUBLIC
+     -------------------------------------------------------------------------------------------------*/
 
     /**
     * Check if this Maybe contains nothing
@@ -109,8 +109,8 @@ public class Maybe<OBJECT> extends Monad<OBJECT> {
     }
 
     /*-------------------------------------------------------------------------------------------------
-    * PUBLIC STATIC
-    -------------------------------------------------------------------------------------------------*/
+     * PUBLIC STATIC
+     -------------------------------------------------------------------------------------------------*/
     
     /**
     * Create a Maybe instance that contains nothing
@@ -135,8 +135,8 @@ public class Maybe<OBJECT> extends Monad<OBJECT> {
     }
 
     /*-------------------------------------------------------------------------------------------------
-    * PRIVATE
-    -------------------------------------------------------------------------------------------------*/
+     * PRIVATE
+     -------------------------------------------------------------------------------------------------*/
     private <OBJECT_OUTPUT> void _validateThatObjectReturnedByMonadicOperationIsAMaybeMonad(Monad<OBJECT_OUTPUT> objectInQuestion) {
         if(!(objectInQuestion instanceof Maybe)) {
             throw new IllegalOperationForMaybeState("Monadic operation returned the wrong type");

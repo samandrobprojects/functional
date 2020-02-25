@@ -9,14 +9,59 @@ package functional;
 * @author  Sam
 */
 
-public class Tuple<TUPLE_SIZE, TUPLE_ELEMENT> {
+public class Tuple<TUPLE_SIZE extends N, TUPLE_ELEMENT> {
 
+    /*-------------------------------------------------------------------------------------------------
+     * PUBLIC STATIC
+     -------------------------------------------------------------------------------------------------*/
 
-    private static void test() {
-        Multiple<NaturalNumber.One, String> twoStrings = new Multiple<>("string 1", new Single<>("string 2"));
-        ((Single<String>)twoStrings.getNext()).getElement();
-        Multiple<NaturalNumber.Succ<NaturalNumber.One>, String> threeStrings = new Multiple<>("string 0", twoStrings);
-        ((Multiple<NaturalNumber.One, String>)threeStrings.getNext()).getNext();
+    /**
+     * Get the tuple without the head element from a given tuple
+     *
+     * @param givenTuple the tuple to retrieve the tail of the tuple from
+     * @return the tuple without the head element
+     */
+    public static <ONE_LESS_THEN_TUPLE_SIZE extends N, TUPLE_ELEMENT> Tuple<ONE_LESS_THEN_TUPLE_SIZE, TUPLE_ELEMENT> withoutHead(Tuple<N.S<ONE_LESS_THEN_TUPLE_SIZE>, TUPLE_ELEMENT> givenTuple) {
+        Multiple<ONE_LESS_THEN_TUPLE_SIZE, TUPLE_ELEMENT> givenTupleAfterTypeCast = (Multiple<ONE_LESS_THEN_TUPLE_SIZE, TUPLE_ELEMENT>) givenTuple;
+        return givenTupleAfterTypeCast.withoutHead();
+    }
+
+    /**
+     * Get the head element from the tuple
+     *
+     * @param givenTuple the tuple to retrieve the head element from
+     * @return the head element
+     */
+    public static <TUPLE_SIZE extends N, TUPLE_ELEMENT> TUPLE_ELEMENT getHead(Tuple<TUPLE_SIZE, TUPLE_ELEMENT> givenTuple) {
+        return givenTuple.getHead();
+    }
+
+    /**
+     * Constructor for single tuple
+     *
+     * @param givenElement the element to store in the tuple
+     * @return the single tuple instance
+     */
+    public static <TUPLE_ELEMENT> Tuple<N.O, TUPLE_ELEMENT> single(TUPLE_ELEMENT givenElement) {
+        return (Tuple<N.O, TUPLE_ELEMENT>) new Single(givenElement);
+    }
+
+    /**
+     * Constructor for multiple tuple
+     *
+     * @param givenElement the element to store in the tuple head
+     * @param givenTuple the tuple to add to the end of the new tuple
+     * @return the multiple tuple instance
+     */
+    public static <TUPLE_SIZE extends N, TUPLE_ELEMENT> Tuple<N.S<TUPLE_SIZE>, TUPLE_ELEMENT> withHead(TUPLE_ELEMENT givenElement, Tuple<TUPLE_SIZE, TUPLE_ELEMENT> givenTuple) {
+        return (Tuple<N.S<TUPLE_SIZE>, TUPLE_ELEMENT>) new Multiple<>(givenElement, givenTuple);
+    }
+
+    /*-------------------------------------------------------------------------------------------------
+     * PRIVATE
+     -------------------------------------------------------------------------------------------------*/
+    protected TUPLE_ELEMENT getHead() {
+        throw new UnsupportedOperationException("Tuple not constructed somehow");
     }
 
     /**
@@ -27,42 +72,27 @@ public class Tuple<TUPLE_SIZE, TUPLE_ELEMENT> {
     * @author  Rob
     * @author  Sam
     */
-    public static class Single<TUPLE_ELEMENT> extends Tuple<NaturalNumber.One, TUPLE_ELEMENT> {
+    private static class Single<TUPLE_ELEMENT> extends Tuple<N.O, TUPLE_ELEMENT> {
         
         private final TUPLE_ELEMENT singleTupleElement;
-        
-        /*-------------------------------------------------------------------------------------------------
-        * PUBLIC STATIC
-        -------------------------------------------------------------------------------------------------*/
-
-        /**
-        * Construct a single tuple
-        *
-        * @param singleTupleElement the tuple element to store
-        * @return single tuple instance
-        */
-        public static <TUPLE_ELEMENT> Single<TUPLE_ELEMENT> tupleOfSingleElement(TUPLE_ELEMENT singleTupleElement) {
-            return new Single(singleTupleElement);
-        }
 
         /*-------------------------------------------------------------------------------------------------
-        * PUBLIC
-        -------------------------------------------------------------------------------------------------*/
+         * PUBLIC
+         -------------------------------------------------------------------------------------------------*/
 
         /**
-        * Get the tuple element
+        * Get the head element from the tuple
         *
-        * <p> Get the single element stored inside the tuple
-        *
-        * @return the element stored in the tuple
+        * @return the head element of the tuple
         */
-        public TUPLE_ELEMENT getElement() {
+        @Override
+        public TUPLE_ELEMENT getHead() {
             return this.singleTupleElement;
         }
 
         /*-------------------------------------------------------------------------------------------------
-        * PRIVATE
-        -------------------------------------------------------------------------------------------------*/
+         * PRIVATE
+         -------------------------------------------------------------------------------------------------*/
         private Single(TUPLE_ELEMENT singleTupleElement) {
             this.singleTupleElement = singleTupleElement;
         }
@@ -77,46 +107,40 @@ public class Tuple<TUPLE_SIZE, TUPLE_ELEMENT> {
     * @author  Rob
     * @author  Sam
     */
-    public static class Multiple<ONE_LESS_THEN_TUPLE_SIZE extends NaturalNumber, TUPLE_ELEMENT> extends Tuple<NaturalNumber.Succ<ONE_LESS_THEN_TUPLE_SIZE>, TUPLE_ELEMENT> {
+    private static class Multiple<ONE_LESS_THEN_TUPLE_SIZE extends N, TUPLE_ELEMENT> extends Tuple<N.S<ONE_LESS_THEN_TUPLE_SIZE>, TUPLE_ELEMENT> {
         
         private final TUPLE_ELEMENT firstTupleElement;
         private final Tuple<ONE_LESS_THEN_TUPLE_SIZE, TUPLE_ELEMENT> tupleTheFirstElementIsPrependedTo;
 
         /*-------------------------------------------------------------------------------------------------
-        * PUBLIC
-        -------------------------------------------------------------------------------------------------*/
-       
-        /**
-        * Construct a tuple with mutiple elements
-        *
-        * @param
-        * @return integer representation of the natural number one
-        */
-        public Multiple(TUPLE_ELEMENT firstTupleElement, Tuple<ONE_LESS_THEN_TUPLE_SIZE, TUPLE_ELEMENT> tupleToPrependTo) {
-            this.firstTupleElement = firstTupleElement;
-            this.tupleTheFirstElementIsPrependedTo = tupleToPrependTo;
-        }
+         * PUBLIC
+         -------------------------------------------------------------------------------------------------*/
 
         /**
-        * Get the integer representation for this Natural Number instance
-        *
-        * <p> This returns 1, since (int) represents the natural number one
-        *
-        * @return integer representation of the natural number one
-        */
-        public TUPLE_ELEMENT getFirstElement() {
+         * Get the head element from the tuple
+         *
+         * @return the head element of the tuple
+         */
+        @Override
+        public TUPLE_ELEMENT getHead() {
             return this.firstTupleElement;
         }
 
         /**
-        * Get the integer representation for this Natural Number instance
-        *
-        * <p> This returns 1, since (int) represents the natural number one
-        *
-        * @return integer representation of the natural number one
-        */
-        public Tuple<ONE_LESS_THEN_TUPLE_SIZE, TUPLE_ELEMENT> getNext() {
+         * Get the tuple without the head element from a given tuple
+         *
+         * @return the tuple without the head element
+         */
+        public Tuple<ONE_LESS_THEN_TUPLE_SIZE, TUPLE_ELEMENT> withoutHead() {
             return this.tupleTheFirstElementIsPrependedTo;
+        }
+
+        /*-------------------------------------------------------------------------------------------------
+         * PRIVATE
+         -------------------------------------------------------------------------------------------------*/
+        private Multiple(TUPLE_ELEMENT firstTupleElement, Tuple<ONE_LESS_THEN_TUPLE_SIZE, TUPLE_ELEMENT> tupleToPrependTo) {
+            this.firstTupleElement = firstTupleElement;
+            this.tupleTheFirstElementIsPrependedTo = tupleToPrependTo;
         }
     }
 }
