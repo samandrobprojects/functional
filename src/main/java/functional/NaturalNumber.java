@@ -36,6 +36,10 @@ public class NaturalNumber {
     */
     public static class One extends NaturalNumber {
         
+        /*-------------------------------------------------------------------------------------------------
+        * PUBLIC
+        -------------------------------------------------------------------------------------------------*/
+        
         /**
         * Constructor for a NaturalNumber.One instance
         *
@@ -70,6 +74,10 @@ public class NaturalNumber {
     public static class Succ<SUCCEEDED_NATURAL_VALUE extends NaturalNumber> extends NaturalNumber {
         
         private final SUCCEEDED_NATURAL_VALUE succeededNaturalValue;
+        
+        /*-------------------------------------------------------------------------------------------------
+        * PUBLIC
+        -------------------------------------------------------------------------------------------------*/
         
         /**
         * Constructor for a NaturalNumber.Succ instance
