@@ -11,9 +11,6 @@ package functional;
 
 public class Tuple<TUPLE_SIZE extends N, TUPLE_ELEMENT> {
 
-    public static <FOLD_TYPE, TUPLE_ELEMENT, TUPLE_SIZE extends N> FOLD_TYPE foldTuple(Tuple<TUPLE_SIZE, TUPLE_ELEMENT> givenTupleToFold, TUPLE_ELEMENT -> FOLD_TYPE<O>, TUPLE_ELEMENT -> FOLD_TYPE<M> -> FOLD_TYPE<S M>)
-
-
     public static <TUPLE_SIZE extends N, TUPLE_ELEMENT> Maybe<Tuple<TUPLE_SIZE, TUPLE_ELEMENT>> multiplexMaybeTuple(final Tuple<TUPLE_SIZE, Maybe<TUPLE_ELEMENT>> givenTuple) {
         return Tuple.getHead(givenTuple).applyGivenOperationOntoThisObjectMondically(new MonadicOperation<Monad<Tuple<TUPLE_SIZE, TUPLE_ELEMENT>>, TUPLE_ELEMENT, Tuple<TUPLE_SIZE, TUPLE_ELEMENT>>() {
             @Override
