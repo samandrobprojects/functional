@@ -11,6 +11,33 @@ package functional;
 
 public class Tuple<TUPLE_SIZE extends N, TUPLE_ELEMENT> {
 
+    public static <FOLD_TYPE, TUPLE_ELEMENT, TUPLE_SIZE extends N> FOLD_TYPE foldTuple(Tuple<TUPLE_SIZE, TUPLE_ELEMENT> givenTupleToFold, TUPLE_ELEMENT -> FOLD_TYPE<O>, TUPLE_ELEMENT -> FOLD_TYPE<M> -> FOLD_TYPE<S M>)
+
+
+    public static <TUPLE_SIZE extends N, TUPLE_ELEMENT> Maybe<Tuple<TUPLE_SIZE, TUPLE_ELEMENT>> multiplexMaybeTuple(final Tuple<TUPLE_SIZE, Maybe<TUPLE_ELEMENT>> givenTuple) {
+        return Tuple.getHead(givenTuple).applyGivenOperationOntoThisObjectMondically(new MonadicOperation<Monad<Tuple<TUPLE_SIZE, TUPLE_ELEMENT>>, TUPLE_ELEMENT, Tuple<TUPLE_SIZE, TUPLE_ELEMENT>>() {
+            @Override
+            public Maybe<Tuple<TUPLE_SIZE, TUPLE_ELEMENT>> performMonadicOperation(final TUPLE_ELEMENT headElement) {
+                boolean givenTupleIsAMultipleTuple = (givenTuple instanceof Multiple);
+                if (givenTupleIsAMultipleTuple) {
+                    Multiple givenTupleAsAMultiple = (Multiple)givenTuple;
+                    Tuple restOfTupleWithoutHead = givenTupleAsAMultiple.withoutHead();
+                    Maybe<Tuple> maybeMultiplexedRestOfTupleWithoutHead = Tuple.multiplexMaybeTuple(restOfTupleWithoutHead);
+                    return maybeMultiplexedRestOfTupleWithoutHead.applyGivenOperationOntoThisObjectMondically(new MonadicOperation<Monad<Tuple<TUPLE_SIZE, TUPLE_ELEMENT>>, Tuple, Tuple<TUPLE_SIZE, TUPLE_ELEMENT>>() {
+                        @Override
+                        public Maybe<Tuple<TUPLE_SIZE, TUPLE_ELEMENT>> performMonadicOperation(final Tuple multiplexedRestOfTupleWithoutHead) {
+                            return Maybe.asObject(Multiple.withHead(headElement, multiplexedRestOfTupleWithoutHead));
+                        }
+                    });
+                } else {
+                    Tuple<TUPLE_SIZE, TUPLE_ELEMENT> singleTupleContainingHeadElement = (Tuple<TUPLE_SIZE, TUPLE_ELEMENT>) Tuple.single(headElement);
+                    return Maybe.asObject(singleTupleContainingHeadElement);
+                }
+            }
+        });
+    }
+
+
     /*-------------------------------------------------------------------------------------------------
      * PUBLIC STATIC
      -------------------------------------------------------------------------------------------------*/
